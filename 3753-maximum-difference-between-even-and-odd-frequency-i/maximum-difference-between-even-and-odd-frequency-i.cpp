@@ -2,30 +2,17 @@ class Solution {
 public:
     int maxDifference(string s) {
         unordered_map<char, int> freq;
-        
-        // Count frequency of each character
-        for (char c : s) {
-            freq[c]++;
-        }
-        
-        int maxDiff = INT_MIN;
-        vector<int> oddFreq, evenFreq;
+        for (char c : s) freq[c]++;
 
-        for (auto& [ch, count] : freq) {
-            if (count % 2 == 1) {
-                oddFreq.push_back(count);
-            } else {
-                evenFreq.push_back(count);
-            }
+        vector<int> odd_freqs, even_freqs;
+        for (auto& [ch, f] : freq) {
+            if (f % 2 == 1) odd_freqs.push_back(f);
+            else even_freqs.push_back(f);
         }
 
-        // Find maximum difference between any odd freq and any even freq
-        for (int odd : oddFreq) {
-            for (int even : evenFreq) {
-                maxDiff = max(maxDiff, odd - even);
-            }
-        }
-
-        return maxDiff;
+        // Constraints guarantee at least one odd and one even frequency
+        int max_odd = *max_element(odd_freqs.begin(), odd_freqs.end());
+        int min_even = *min_element(even_freqs.begin(), even_freqs.end());
+        return max_odd - min_even;
     }
 };
